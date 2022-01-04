@@ -27,9 +27,9 @@ class ConnexionDb{
 }
 
 class CreateDb{
-    public function Create( $servername, $username, $password, $dbname){
+    public function Create($dbname){
         try{
-            $codb = new ConnexionDb($servername,$username,$password);
+            $codb = new ConnexionDb("localhost","root","");
             $sql = "CREATE DATABASE IF NOT EXISTS $dbname";
             $codb->codb->exec($sql);
             $codb = null;
@@ -44,6 +44,6 @@ class CreateDb{
 
 
 $CreateDb = new CreateDb;
-$CreateDb -> Create("localhost","root","","new");
+$CreateDb -> Create("wen");
 
 ?>
