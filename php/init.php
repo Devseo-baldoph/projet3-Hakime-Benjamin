@@ -91,11 +91,30 @@ class CreateTb{
     }
 }
 
+class CreateColonne{
+    public function Create($dbname,$tbname,$colonne,$type){
+        try{
+            $codb = new ConnexionDb("localhost","root","",$dbname);
+            $sql = "ALTER TABLE $tbname ADD $colonne $type";
+            $codb->codb->exec($sql);
+            $codb = null;
+        }
+        catch(PDOException $e)
+        {
+            
+            echo "Message d'erreur : " .$e->getMessage(). "<br />";   
+        }
+    }
+}
+
 
 // $CreateDb = new CreateDb; // A utiliser pour Creer
 // $CreateDb -> Create("nomDeMaBaseDeDonnee");  // une base de donnée
 
 // $CreateTb = new CreateTb; // A utiliser pour creer
 // $CreateTb -> Create("nomDeMaBaseDeDonnee","nomDeMaTable");  // une Table
+
+// $CreateTb = new CreateColonne; // A utiliser pour creer
+// $CreateTb -> Create("nomDeMaBaseDeDonnee","nomDeMaTable","nom","VARCHAR(40)");  // une Table
 
 ?>
