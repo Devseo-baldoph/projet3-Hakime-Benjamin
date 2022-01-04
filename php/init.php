@@ -43,7 +43,8 @@ class CreateDb{
 }
 
 
-$CreateDb = new CreateDb;
-$CreateDb -> Create("wen");
+
+// $CreateDb = new CreateDb; // A utiliser pour Creer
+// $CreateDb -> Create("wen");  // une base de donnée
 
 ?>
