@@ -52,7 +52,7 @@ class ConnexionDb{
 // $ConnexionDb -> CreateTb("test");  // une Table
 
 // $ConnexionDb = new ConnexionDb; // A utiliser pour creer
-// $ConnexionDb -> CreateCl("test","nom","VARCHAR(40)");  // une Table
+// $ConnexionDb -> CreateCl("test","nom","VARCHAR(40)");  // une Colonne
 
 // $ConnexionDb = new ConnexionDb; // A utiliser pour creer
 // $ConnexionDb -> CreateVl("test","nom","hakime");  // une Valeur
