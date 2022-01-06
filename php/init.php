@@ -1,17 +1,11 @@
 <?php 
 session_start();
-
-class ConnexionPhpMyAdmin{
-    private $servername;
-    private $username;
-    private $password;
+class ConnexionDb{
     public $codb;
-    public function __construct(string $servername,string $username, $password){
+    public $sql; 
+    public function __construct(){
         try{
-            $this -> servername = $servername;
-            $this -> username = $username;
-            $this -> password = $password;
-            $codb = new PDO("mysql:host=$servername", $username, $password,[
+            $codb = new PDO("mysql:host=localhost;dbname=gite", "root", "",[
             PDO::ATTR_ERRMODE=> PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE=>PDO::FETCH_OBJ,
             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8']);
@@ -24,16 +18,11 @@ class ConnexionPhpMyAdmin{
             echo "Message d'erreur : " .$e->getMessage(). "<br />";
         }
     }
-}
 
-class CreateDb{
-    public function Create($dbname){
+    public function __destruct(){
         try{
-            $codb = new ConnexionPhpMyAdmin("localhost","root","");
-            $sql = "CREATE DATABASE IF NOT EXISTS $dbname(
-                id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY)";
-            $codb->codb->exec($sql);
-            $codb = null;
+            $this->codb->exec($this->sql);
+            $this->codb = null;
         }
         catch(PDOException $e)
         {
@@ -41,80 +30,30 @@ class CreateDb{
             echo "Message d'erreur : " .$e->getMessage(). "<br />";   
         }
     }
-}
 
-// ---------------------------------------------------------------------------------------------------------------------------
+    public function CreateTb($tbname){
+        $this ->sql = "CREATE TABLE IF NOT EXISTS $tbname(
+            id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY)";
+    }
 
-class ConnexionDb{
-    private $servername;
-    private $username;
-    private $password;
-    private $dbname;
-    public $codb;
-    public function __construct(string $servername,string $username, $password, string $dbname){
-        try{
-            $this -> servername = $servername;
-            $this -> username = $username;
-            $this -> password = $password;
-            $this -> dbname = $dbname;
-            $codb = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password,[
-            PDO::ATTR_ERRMODE=> PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE=>PDO::FETCH_OBJ,
-            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8']);
-            $this -> codb = $codb;
-            
-        }
-        catch(PDOException $e)
-        {
-            
-            echo "Message d'erreur : " .$e->getMessage(). "<br />";
-        }
+    public function CreateCl($tbname,$colonne,$type){
+            $this->sql = "ALTER TABLE $tbname ADD $colonne $type";
+    }
+    
+    public function CreateVl($tbname,$colonne,$value){
+        $this->sql = "INSERT INTO $tbname($colonne)
+            VALUES ('$value')";
     }
 }
 
 // ---------------------------------------------------------------
 
-class CreateTb{
-    public function Create($dbname,$tbname){
-        try{
-            $codb = new ConnexionDb("localhost","root","",$dbname);
-            $sql = "CREATE TABLE IF NOT EXISTS $tbname(
-                id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY)";
-            $codb->codb->exec($sql);
-            $codb = null;
-        }
-        catch(PDOException $e)
-        {
-            
-            echo "Message d'erreur : " .$e->getMessage(). "<br />";   
-        }
-    }
-}
+// $ConnexionDb = new ConnexionDb; // A utiliser pour creer
+// $ConnexionDb -> CreateTb("test");  // une Table
 
-class CreateColonne{
-    public function Create($dbname,$tbname,$colonne,$type){
-        try{
-            $codb = new ConnexionDb("localhost","root","",$dbname);
-            $sql = "ALTER TABLE $tbname ADD $colonne $type";
-            $codb->codb->exec($sql);
-            $codb = null;
-        }
-        catch(PDOException $e)
-        {
-            
-            echo "Message d'erreur : " .$e->getMessage(). "<br />";   
-        }
-    }
-}
+// $ConnexionDb = new ConnexionDb; // A utiliser pour creer
+// $ConnexionDb -> CreateCl("test","nom","VARCHAR(40)");  // une Table
 
-
-// $CreateDb = new CreateDb; // A utiliser pour Creer
-// $CreateDb -> Create("nomDeMaBaseDeDonnee");  // une base de donnée
-
-// $CreateTb = new CreateTb; // A utiliser pour creer
-// $CreateTb -> Create("nomDeMaBaseDeDonnee","nomDeMaTable");  // une Table
-
-// $CreateTb = new CreateColonne; // A utiliser pour creer
-// $CreateTb -> Create("nomDeMaBaseDeDonnee","nomDeMaTable","nom","VARCHAR(40)");  // une Table
-
+// $ConnexionDb = new ConnexionDb; // A utiliser pour creer
+// $ConnexionDb -> CreateVl("test","nom","hakime");  // une Valeur
 ?>
